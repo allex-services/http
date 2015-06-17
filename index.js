@@ -1,4 +1,4 @@
-function createServicePack(execlib){
+function createServicePack(execlib) {
   'use strict';
   var execSuite = execlib.execSuite,
   ParentServicePack = execSuite.registry.get('.');

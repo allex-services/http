@@ -21,7 +21,8 @@ function createHttpService(execlib,ParentServicePack){
 
     this.protocol = null;
     this.port = null;
-  };
+  }
+
   lib.inherit(ServerMaintainer, lib.ChangeableListenable);
   ServerMaintainer.prototype.__cleanUp = function () {
     this.stop().done (this._fullCleanup.bind(this));
@@ -34,7 +35,7 @@ function createHttpService(execlib,ParentServicePack){
     this.status = null;
     lib.ChangeableListenable.prototype.__cleanUp.call(this);
     lib.Destroyable.prototype.__cleanUp.call(this);
-  }
+  };
 
   ServerMaintainer.prototype.set_port = function (val) {
     if (this.get('status') !== 'down') {
