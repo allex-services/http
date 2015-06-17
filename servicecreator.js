@@ -1,6 +1,7 @@
 function createHttpService(execlib,ParentServicePack){
   'use strict';
-  var ParentService = ParentServicePack.Service;
+  var lib = execlib.lib,
+    ParentService = ParentServicePack.Service;
 
   function factoryCreator(parentFactory){
     return {
@@ -33,7 +34,7 @@ function createHttpService(execlib,ParentServicePack){
     this.status = null;
     lib.ChangeableListenable.prototype.__cleanUp.call(this);
     lib.Destroyable.prototype.__cleanUp.call(this);
-  }:
+  }
 
   ServerMaintainer.prototype.set_port = function (val) {
     if (this.get('status') !== 'down') {
@@ -69,7 +70,7 @@ function createHttpService(execlib,ParentServicePack){
       this._server = require(protocol).createServer(this._onreq);
       this._server.on('error', this._onecb);
       this._server.on('close', this._onServerClosed.bind(this));
-      this._server.on('listening', this._onServerListenOn.bind(this);
+      this._server.on('listening', this._onServerListenOn.bind(this));
       this.set('status', 'starting');
       this._server.listen(port, defer.resolve.bind(defer));
     }
@@ -116,7 +117,7 @@ function createHttpService(execlib,ParentServicePack){
 
   function HttpService(prophash){
     ParentService.call(this,prophash);
-    this.sm = new ServerMaintainer(this._onServerError.bind(this), this._onRequest.bind(this));
+    this.sm = new ServerMaintainer(lib.dummyFunc/*this._onServerError.bind(this)*/, this._onRequest.bind(this));
 
     this._sm_status_listener = this.sm.attachListener('status', this.state.set.bind(this.state, 'status'));
     this._sm_port_listener = this.sm.attachListener('port', this.state.set.bind(this.state, 'port'));
