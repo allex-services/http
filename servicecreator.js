@@ -38,26 +38,32 @@ function createHttpService(execlib,ParentServicePack){
   };
 
   ServerMaintainer.prototype.set_port = function (val) {
-    if (this.get('status') !== 'down') {
+    if (this.status !== 'down') {
       console.log('Port change not allowed while server not down ...');
       return;
     }
-    this.port = val;
+    this.port = val || null;
   };
 
   ServerMaintainer.prototype.set_protocol = function (val) {
-    if (this.get('status') !== 'down') {
+    if (this.status !== 'down') {
       console.log('Protocol change not allowed while server not down ...');
       return;
     }
     this.protocol = val;
   };
+  
+  ServerMaintainer.prototype._startFailed = function (e) {
+    /// just a helper ....
+    console.log('Error: Start failed due to ', e);
+  };
 
   ServerMaintainer.prototype.start = function (defer) {
     if (!defer) defer = lib.q.defer();
-    var port = this.get('port'), protocol = this.get('protocol');
+    var port = this.port, protocol = this.protocol;
+    defer.promise.done(lib.dummyFunc, this._startFailed.bind(this));
 
-    if (this.get('status') !== 'down') {
+    if (this.status !== 'down') {
       defer.reject('Server is not down in order to be started, try again later');
     }else if (!port) {
       defer.reject('Missing port');
@@ -149,7 +155,7 @@ function createHttpService(execlib,ParentServicePack){
   };
 
   HttpService.prototype._onPortAcquired = function (port) {
-    this.sm.set('port');
+    this.sm.set('port', port);
     this.sm.start();
   };
 
