@@ -1,14 +1,13 @@
-function createHttpUserTester(execlib,Tester){
+function createHttpUserTester(execlib, Tester) {
   'use strict';
-  var lib = execlib.lib,
-      q = lib.q;
+  var lib = execlib.lib;
 
-  function HttpUserTester(prophash,client){
-    Tester.call(this,prophash,client);
+  function HttpUserTester(prophash, client) {
+    Tester.call(this, prophash, client);
     console.log('runNext finish');
-    lib.runNext(this.finish.bind(this,0));
+    lib.runNext(this.finish.bind(this, 0));
   }
-  lib.inherit(HttpUserTester,Tester);
+  lib.inherit(HttpUserTester, Tester);
 
   return HttpUserTester;
 }
