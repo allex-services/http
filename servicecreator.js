@@ -124,7 +124,7 @@ function createHttpService(execlib,ParentServicePack){
 
   function HttpService(prophash){
     ParentService.call(this,prophash);
-    this.sm = new ServerMaintainer(lib.dummyFunc/*this._onServerError.bind(this)*/, this._onRequest.bind(this));
+    this.sm = new ServerMaintainer(this._onServerError.bind(this), this._onRequestBase.bind(this));
 
     this._sm_status_listener = this.sm.attachListener('status', this.state.set.bind(this.state, 'status'));
     this._sm_port_listener = this.sm.attachListener('port', this.state.set.bind(this.state, 'port'));
@@ -159,6 +159,11 @@ function createHttpService(execlib,ParentServicePack){
     this.sm.start();
   };
 
+  HttpService.prototype._onRequestBase = function (req, res) {
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    this._onRequest(req, res);
+  };
+
   HttpService.prototype._onRequest = function (req, res) {
     throw new Error('_onRequest not implemented');
   };
@@ -172,6 +177,10 @@ function createHttpService(execlib,ParentServicePack){
 
   HttpService.prototype.restart = function(reconfiguration , defer){
     this.sm.restart(reconfiguration, defer);
+  };
+
+  HttpService.prototype._onServerError = function(reason){
+    throw reason;
   };
 
   return HttpService;
