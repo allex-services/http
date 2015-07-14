@@ -1,6 +1,6 @@
 {
   "name": "allex_httpservice",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "HttpService",
   "main": "index.js",
   "scripts": {
