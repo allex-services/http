@@ -131,9 +131,13 @@ function createHttpService(execlib,ParentServicePack){
     this._sm_proto_listener= this.sm.attachListener('protocol', this.state.set.bind(this.state, 'protocol'));
 
     this.sm.set('protocol', 'http');
-    var d = lib.q.defer();
-    this.acquirePort(d);
-    d.promise.done(this._onPortAcquired.bind(this));
+    if (prophash.port) {
+      this._onPortAcquired(prophash.port);
+    } else {
+      var d = lib.q.defer();
+      this.acquirePort(d);
+      d.promise.done(this._onPortAcquired.bind(this));
+    }
   }
   ParentService.inherit(HttpService,factoryCreator);
   HttpService.prototype.__cleanUp = function(){
