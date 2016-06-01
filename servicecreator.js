@@ -1,6 +1,7 @@
 function createHttpService(execlib,ParentServicePack){
   'use strict';
   var lib = execlib.lib,
+    qlib = lib.qlib,
     ParentService = ParentServicePack.Service;
 
   function factoryCreator(parentFactory){
@@ -160,7 +161,13 @@ function createHttpService(execlib,ParentServicePack){
 
   HttpService.prototype._onPortAcquired = function (port) {
     this.sm.set('port', port);
-    this.sm.start();
+    if (this.readyToAcceptUsersDefer) {
+      this.readyToAcceptUsersDefer.promise.then(
+        qlib.executor(this.sm.start.bind(this.sm))
+      );
+    } else {
+      this.sm.start();
+    }
   };
 
   HttpService.prototype._onRequestBase = function (req, res) {
