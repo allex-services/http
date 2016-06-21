@@ -1,1 +1,1 @@
-ALLEX.execSuite.registry.add('allex_httpservice',require('./clientside')(ALLEX, ALLEX.execSuite.registry.get('.')));
+ALLEX.execSuite.registry.registerClientSide('allex_httpservice',require('./sinkmapcreator')(ALLEX, ALLEX.execSuite.registry.getClientSide('.')));
