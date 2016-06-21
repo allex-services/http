@@ -1,8 +1,7 @@
-function createHttpService(execlib,ParentServicePack){
+function createHttpService(execlib,ParentService){
   'use strict';
   var lib = execlib.lib,
-    qlib = lib.qlib,
-    ParentService = ParentServicePack.Service;
+    qlib = lib.qlib;
 
   function factoryCreator(parentFactory){
     return {
