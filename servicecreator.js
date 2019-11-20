@@ -75,6 +75,7 @@ function createHttpService(execlib,ParentService){
         this._onServerClosed();
       }
       this._server = require(protocol).createServer(this._onreq);
+      this._server.timeout = 2*lib.intervals.Hour;
       this._server.on('error', this._onecb);
       this._server.on('close', this._onServerClosed.bind(this));
       this._server.on('listening', this._onServerListenOn.bind(this));
