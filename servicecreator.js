@@ -24,6 +24,10 @@ function createHttpService(execlib,ParentService){
   }
 
   lib.inherit(ServerMaintainer, lib.ChangeableListenable);
+  lib.inheritMethods(ServerMaintainer, lib.Destroyable
+    , 'destroy'
+    , 'shouldDie'
+  );
   ServerMaintainer.prototype.__cleanUp = function () {
     this.stop().done (this._fullCleanup.bind(this));
   };
@@ -34,7 +38,6 @@ function createHttpService(execlib,ParentService){
     this._onreq = null;
     this.status = null;
     lib.ChangeableListenable.prototype.__cleanUp.call(this);
-    lib.Destroyable.prototype.__cleanUp.call(this);
   };
 
   ServerMaintainer.prototype.set_port = function (val) {
@@ -142,11 +145,17 @@ function createHttpService(execlib,ParentService){
   }
   ParentService.inherit(HttpService,factoryCreator);
   HttpService.prototype.__cleanUp = function(){
-    this._sm_proto_listener.destroy();
-    this._sm_status_listener = null;
-    this._sm_port_listener.destroy();
+    if (this._sm_proto_listener) {
+      this._sm_proto_listener.destroy();
+    }
+    this._sm_proto_listener = null;
+    if (this._sm_port_listener) {
+      this._sm_port_listener.destroy();
+    }
     this._sm_port_listener = null;
-    this._sm_status_listener.destroy();
+    if (this._sm_status_listener) {
+      this._sm_status_listener.destroy();
+    }
     this._sm_status_listener = null;
 
     this.sm.destroy();
